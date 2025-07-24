@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Typography, Box, Paper, Container } from "@mui/material";
+import {Link, TextField, Button, Typography, Box, Paper, Container } from "@mui/material";
 import { validateEmail, validatePassword, passwordValidationMessage } from "../utils/validation";
 import registerUser from "../services/signup";
+import { Link as RouterLink } from "react-router-dom";
 
 const UserSignup = () => {
   const [formData, setFormData] = useState({
@@ -135,6 +136,19 @@ const UserSignup = () => {
           >
             Signup
           </Button>
+          <Box display="flex" justifyContent="center" mt={2}>
+                      <Typography align="center" variant="body1">
+                        Already have an account?
+                        <Link
+                          component={RouterLink}
+                          to="/user/login"
+                          color="primary"
+                          underline="hover"
+                        >
+                          Login here
+                        </Link>
+                      </Typography>
+                    </Box>
         </Paper>
       </Box>
     </Container>

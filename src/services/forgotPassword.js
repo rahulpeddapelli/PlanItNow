@@ -16,8 +16,8 @@ const forgotPassword = async (email) => {
   } catch (error) {
     console.error("Forgot Password Error:", error);
     return {
-      ok: false,
-      data: { msg: "Something went wrong. Please try again." },
+      success: false,
+      msg: "Something went wrong. Please try again." ,
     };
   }
 };

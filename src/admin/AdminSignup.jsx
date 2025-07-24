@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import registerUser from "../services/signup";
+import { Link as RouterLink } from "react-router-dom";
+
 import {
   validatePassword,
   passwordValidationMessage,
 } from "../utils/validation";
 
 import {
+  Link,
   Box,
   TextField,
   Button,
@@ -101,7 +104,7 @@ const AdminSignup = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ bgcolor: "#F6F4FFFF" }}>
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -166,6 +169,19 @@ const AdminSignup = () => {
           >
             Signup
           </Button>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Typography align="center" variant="body1">
+              Already have an account?
+              <Link
+                component={RouterLink}
+                to="/admin/login"
+                color="primary"
+                underline="hover"
+              >
+                Login here
+              </Link>
+            </Typography>
+          </Box>
         </Paper>
       </Box>
     </Container>

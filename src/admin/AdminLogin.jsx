@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import loginUser from "../services/login";
+import { Link as RouterLink } from "react-router-dom";
 import {
+  Link,
   TextField,
   Button,
   Typography,
@@ -55,9 +57,9 @@ const AdminLogin = () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  useEffect (()=>{
-      console.log(formData)
-  },[formData])
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -71,7 +73,7 @@ const AdminLogin = () => {
     console.log("Submitted");
 
     try {
-      console.log(formData)
+      console.log(formData);
       const { success, msg, data } = await loginUser(formData);
       if (success) {
         setFormData({ email: "", password: "" });
@@ -150,6 +152,23 @@ const AdminLogin = () => {
           >
             Login
           </Button>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Typography align="center" variant="body1">
+            Don't have an account?
+            <Link
+            component={RouterLink}
+            to="/admin/signup"
+            color="primary"
+            underline="hover"
+            >Signup here</Link>|
+            <Link
+             component={RouterLink}
+            to="/admin/forgot-password"
+            color="primary"
+            underline="hover"
+            >Forgot Password </Link>
+          </Typography>
+          </Box>
         </Paper>
       </Box>
     </Container>

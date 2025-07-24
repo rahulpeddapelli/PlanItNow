@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Typography, Box, Paper } from "@mui/material";
+import {Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { validateEmail } from "../utils/validation";
-
+import {Link as RouterLink} from "react-router-dom"
 const UserForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
@@ -70,8 +70,21 @@ const UserForgotPassword = () => {
           disabled={!isValid}
           sx={{ mt: 2 }}
         >
-          Send Reset Link
+          Send OTP
         </Button>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Typography align="center" variant="body1">
+            Not Signup yet?
+            <Link
+              component={RouterLink}
+              to="/user/signup"
+              color="primary"
+              underline="hover"
+            >
+              Signup now
+            </Link>
+          </Typography>
+        </Box>
       </Paper>
     </Box>
   );
