@@ -125,7 +125,7 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer for Mobile */}
+     
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
         <Box sx={{ width: 250, p: 2 }}>
           <List>
@@ -154,7 +154,7 @@ const Navbar = () => {
         </Box>
       </Drawer>
 
-      {/* Sub Navigation */}
+     
       {!isMobile && (
         <Box
           sx={{
