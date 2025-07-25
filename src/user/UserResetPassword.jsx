@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Link,
   TextField,
   Button,
   Typography,
@@ -8,6 +9,8 @@ import {
   Container,
 } from "@mui/material";
 import { validateEmail, validatePassword } from "../utils/validation";
+import resetPassword from "../services/resetPassword";
+import { Link as RouterLink } from "react-router-dom";
 
 const UserResetPassword = () => {
   const [form, setForm] = useState({
@@ -70,19 +73,59 @@ const UserResetPassword = () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setTouched({ email: true, otp: true, password: true });
+  //   if (isValid) {
+  //     console.log("User reset data:", form);
+  //   }
+  // };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setTouched({ email: true, otp: true, password: true });
-    if (isValid) {
-      console.log("User reset data:", form);
+    // if (!validate()) return;
+    // setLoading(true);
+
+    try {
+      const { success, msg } = await resetPassword(form);
+
+      if (success) {
+        console.log("Reset password successfuly!");
+        setForm({ email: "", password: "", otp: "" });
+        setErrors({});
+        showSuccess(data.msg);
+        setTimeout(() => {
+          navigate("/user/login");
+        }, 3000);
+      } else {
+        console.log("not reset");
+        showError(data.msg);
+      }
+    } catch (err) {
+      console.log("error");
+      // showError("Unable to reset password due to server error. Please try again.");
     }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ padding: 4, mt: 8 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+    <Box
+      minHeight="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      px={1}
+      sx={{ bgcolor: "#F6F4FFFF" }}
+    >
+      <Paper elevation={3} sx={{ padding: 4, mt: 8, maxWidth: 400 }}>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          sx={{ color: "blue" }}
+        >
           User Reset Password
+        </Typography>
+        <Typography align="center" variant="body1" sx={{ color: "gray" }}>
+          Enter email, new password & OTP to reset.
         </Typography>
         <Box component="form" onSubmit={handleSubmit}>
           <TextField
@@ -94,6 +137,7 @@ const UserResetPassword = () => {
             onBlur={() => handleBlur("email")}
             error={!!errors.email}
             helperText={errors.email}
+            sx={{ height: "56px" }}
           />
           <TextField
             label="OTP"
@@ -104,6 +148,7 @@ const UserResetPassword = () => {
             onBlur={() => handleBlur("otp")}
             error={!!errors.otp}
             helperText={errors.otp}
+            sx={{ height: "56px" }}
           />
           <TextField
             label="New Password"
@@ -115,6 +160,7 @@ const UserResetPassword = () => {
             onBlur={() => handleBlur("password")}
             error={!!errors.password}
             helperText={errors.password}
+            sx={{ height: "56px" }}
           />
           <Button
             type="submit"
@@ -127,8 +173,21 @@ const UserResetPassword = () => {
             Reset Password
           </Button>
         </Box>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Typography align="center" variant="body1">
+            Didn't receive OTP?{" "}
+            <Link
+              component={RouterLink}
+              to="/user/forgot-password"
+              color="secondary"
+              underline="hover"
+            >
+              Resend OTP
+            </Link>
+          </Typography>
+        </Box>
       </Paper>
-    </Container>
+    </Box>
   );
 };
 

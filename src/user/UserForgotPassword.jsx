@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
+import { Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { validateEmail } from "../utils/validation";
-import {Link as RouterLink} from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom";
+import forgotPassword from "../services/forgotPassword";
+import { useNavigate } from "react-router-dom";
 const UserForgotPassword = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState("");
@@ -23,14 +26,43 @@ const UserForgotPassword = () => {
     }
   }, [email, touched]);
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setTouched(true);
+  //   if (isValid) {
+  //     console.log("Reset email sent to:", email);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setTouched(true);
-    if (isValid) {
-      console.log("Reset email sent to:", email);
+    if (!isValid) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    // setLoading(true);
+    try {
+      const { success, msg } = await forgotPassword({ role: "user", email });
+
+      if (success) {
+        console.log("otp send successfully ");
+        // showSuccess(msg);
+        setEmail("");
+        alert("OTP sent successfully! Redirecting to reset password...");
+        setTimeout(() => {
+          console.log("reset ");
+          navigate("/user/reset-password");
+        }, 2000);
+      } else {
+        console.log("not send otp");
+        // showError(data.msg);
+      }
+    } catch (err) {
+      console.log("error show");
+      // showError("Server error occurred while requesting OTP. Please try again.");
     }
   };
-
   return (
     <Box
       sx={{
@@ -38,7 +70,7 @@ const UserForgotPassword = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        bgcolor: "#f5f5f5",
+        bgcolor: "#F6F4FFFF",
         px: 2,
       }}
     >
@@ -48,8 +80,16 @@ const UserForgotPassword = () => {
         component="form"
         onSubmit={handleSubmit}
       >
-        <Typography variant="h5" gutterBottom align="center">
+        <Typography
+          variant="h5"
+          gutterBottom
+          align="center"
+          sx={{ color: "blue" }}
+        >
           Forgot Password
+        </Typography>
+        <Typography align="center" variant="body1" sx={{ color: "gray" }}>
+          Enter your email to get OTP.
         </Typography>
 
         <TextField
@@ -61,6 +101,7 @@ const UserForgotPassword = () => {
           onBlur={() => setTouched(true)}
           error={touched && !!error}
           helperText={touched && error}
+          sx={{ height: "56px" }}
         />
 
         <Button
@@ -78,7 +119,7 @@ const UserForgotPassword = () => {
             <Link
               component={RouterLink}
               to="/user/signup"
-              color="primary"
+              color="secondary"
               underline="hover"
             >
               Signup now

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { validatePassword, passwordValidationMessage } from "../utils/validation";
-
 import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Container,
-  Paper,
-} from "@mui/material";
-import { validateEmail,  } from "../utils/validation";
+  validatePassword,
+  passwordValidationMessage,
+} from "../utils/validation";
+import resetPassword from "../services/resetPassword";
+import { Link as RouterLink } from "react-router-dom";
+
+import { Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
+import { validateEmail } from "../utils/validation";
 
 const AdminResetPassword = () => {
   const [form, setForm] = useState({
@@ -73,25 +71,65 @@ const AdminResetPassword = () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setTouched({
-      email: true,
-      otp: true,
-      password: true,
-    });
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setTouched({
+  //     email: true,
+  //     otp: true,
+  //     password: true,
+  //   });
+  // if (isValid) {
+  //     console.log("Reset Data Submitted:", form);
+  //     // call API here
+  //   }
+  // };
 
-    if (isValid) {
-      console.log("Reset Data Submitted:", form);
-      // call API here
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // if (!validate()) return;
+    // setLoading(true);
+
+    try {
+      const { success, msg } = await resetPassword(form);
+
+      if (success) {
+        console.log("Reset password successfuly!");
+        setForm({ email: "", password: "", otp: "" });
+        setErrors({});
+        showSuccess(data.msg);
+        setTimeout(() => {
+          navigate("/admin/login");
+        }, 3000);
+      } else {
+        console.log("not reset");
+        showError(data.msg);
+      }
+    } catch (err) {
+      console.log("error");
+      // showError("Unable to reset password due to server error. Please try again.");
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+    <Box
+      minHeight="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      px={1}
+      sx={{ bgcolor: "#F6F4FFFF" }}
+    >
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 400 }}>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          sx={{ color: "blue" }}
+        >
           Admin Reset Password
+        </Typography>
+        <Typography align="center" variant="body1" sx={{ color: "gray" }}>
+          Enter email, new password & OTP to reset.
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <TextField
@@ -103,6 +141,7 @@ const AdminResetPassword = () => {
             onBlur={() => handleBlur("email")}
             error={!!errors.email}
             helperText={errors.email}
+            sx={{ height: "56px" }}
           />
 
           <TextField
@@ -114,6 +153,7 @@ const AdminResetPassword = () => {
             onBlur={() => handleBlur("otp")}
             error={!!errors.otp}
             helperText={errors.otp}
+            sx={{ height: "56px" }}
           />
 
           <TextField
@@ -126,6 +166,7 @@ const AdminResetPassword = () => {
             onBlur={() => handleBlur("password")}
             error={!!errors.password}
             helperText={errors.password}
+            sx={{ height: "56px" }}
           />
 
           <Button
@@ -138,8 +179,21 @@ const AdminResetPassword = () => {
             Reset Password
           </Button>
         </Box>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Typography align="center" variant="body1">
+            Didn't receive OTP?{" "}
+            <Link
+              component={RouterLink}
+              to="/admin/forgot-password"
+              color="secondary"
+              underline="hover"
+            >
+              Resend OTP
+            </Link>
+          </Typography>
+        </Box>
       </Paper>
-    </Container>
+    </Box>
   );
 };
 

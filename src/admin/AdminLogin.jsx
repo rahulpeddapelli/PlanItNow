@@ -98,80 +98,89 @@ const AdminLogin = () => {
     }
   };
   return (
-    <Container maxWidth="sm">
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      px={1}
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "#F6F4FFFF",
+      }}
+    >
+      <Paper
+        elevation={3}
         sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
+          padding: 4,
+          width: "100%",
+          borderRadius: 2,
+          maxWidth: 400,
         }}
       >
-        <Paper
-          elevation={3}
-          sx={{
-            padding: 4,
-            width: "100%",
-            borderRadius: 2,
-          }}
+        <Typography variant="h5" align="center" sx={{ mb: 4, color: "blue" }}>
+          Admin Login
+        </Typography>
+
+        <TextField
+          label="Email"
+          fullWidth
+          margin="normal"
+          value={formData.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+          onBlur={() => handleBlur("email")}
+          error={touched.email && !!errors.email}
+          helperText={touched.email && errors.email}
+          sx={{ height: "56px" }}
+        />
+
+        <TextField
+          label="Password"
+          type="password"
+          fullWidth
+          margin="normal"
+          value={formData.password}
+          onChange={(e) => handleChange("password", e.target.value)}
+          onBlur={() => handleBlur("password")}
+          error={touched.password && !!errors.password}
+          helperText={touched.password && errors.password}
+          sx={{ height: "56px" }}
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ mt: 3 }}
+          disabled={!isValid}
         >
-          <Typography variant="h5" align="center" sx={{ mb: 4 }}>
-            Admin Login
-          </Typography>
-
-          <TextField
-            label="Email"
-            fullWidth
-            margin="normal"
-            value={formData.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-            onBlur={() => handleBlur("email")}
-            error={touched.email && !!errors.email}
-            helperText={touched.email && errors.email}
-          />
-
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            margin="normal"
-            value={formData.password}
-            onChange={(e) => handleChange("password", e.target.value)}
-            onBlur={() => handleBlur("password")}
-            error={touched.password && !!errors.password}
-            helperText={touched.password && errors.password}
-          />
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ mt: 3 }}
-            disabled={!isValid}
-          >
-            Login
-          </Button>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Typography align="center" variant="body1">
+          Login
+        </Button>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Typography align="center" variant="body1">
             Don't have an account?
             <Link
-            component={RouterLink}
-            to="/admin/signup"
-            color="primary"
-            underline="hover"
-            >Signup here</Link>|
+              component={RouterLink}
+              to="/admin/signup"
+              color="secondary"
+              underline="hover"
+            >
+              Signup here
+            </Link>
+            |
             <Link
-             component={RouterLink}
-            to="/admin/forgot-password"
-            color="primary"
-            underline="hover"
-            >Forgot Password </Link>
+              component={RouterLink}
+              to="/admin/forgot-password"
+              color="secondary"
+              underline="hover"
+            >
+              Forgot Password{" "}
+            </Link>
           </Typography>
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

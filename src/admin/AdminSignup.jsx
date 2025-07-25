@@ -7,15 +7,7 @@ import {
   passwordValidationMessage,
 } from "../utils/validation";
 
-import {
-  Link,
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Container,
-} from "@mui/material";
+import { Link, Box, TextField, Button, Typography, Paper } from "@mui/material";
 import { validateEmail } from "../utils/validation";
 
 const AdminSignup = () => {
@@ -104,87 +96,95 @@ const AdminSignup = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ bgcolor: "#F6F4FFFF" }}>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      px={1}
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "#F6F4FFFF",
+      }}
+    >
+      <Paper
+        elevation={3}
         sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
+          padding: 4,
+          width: "100%",
+          borderRadius: 2,
+          maxWidth: 400,
         }}
       >
-        <Paper
-          elevation={3}
-          sx={{
-            padding: 4,
-            width: "100%",
-            borderRadius: 2,
-          }}
+        <Typography
+          variant="h5"
+          sx={{ mb: 3, fontWeight: 600, textAlign: "center", color: "blue" }}
         >
-          <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            Admin Signup
+          Admin Signup
+        </Typography>
+
+        <TextField
+          label="Name"
+          fullWidth
+          margin="normal"
+          value={formData.name}
+          onChange={(e) => handleChange("name", e.target.value)}
+          onBlur={() => handleBlur("name")}
+          error={touched.name && !!errors.name}
+          helperText={touched.name && errors.name}
+          sx={{ height: "56px" }}
+        />
+
+        <TextField
+          label="Email"
+          fullWidth
+          margin="normal"
+          value={formData.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+          onBlur={() => handleBlur("email")}
+          error={touched.email && !!errors.email}
+          helperText={touched.email && errors.email}
+          sx={{ height: "56px" }}
+        />
+
+        <TextField
+          label="Password"
+          type="password"
+          fullWidth
+          margin="normal"
+          value={formData.password}
+          onChange={(e) => handleChange("password", e.target.value)}
+          onBlur={() => handleBlur("password")}
+          error={touched.password && !!errors.password}
+          helperText={touched.password && errors.password}
+          sx={{ height: "56px" }}
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ mt: 3 }}
+          disabled={!isValid}
+        >
+          Signup
+        </Button>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Typography align="center" variant="body1">
+            Already have an account?
+            <Link
+              component={RouterLink}
+              to="/admin/login"
+              color="secondary"
+              underline="hover"
+            >
+              Login here
+            </Link>
           </Typography>
-
-          <TextField
-            label="Name"
-            fullWidth
-            margin="normal"
-            value={formData.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            onBlur={() => handleBlur("name")}
-            error={touched.name && !!errors.name}
-            helperText={touched.name && errors.name}
-          />
-
-          <TextField
-            label="Email"
-            fullWidth
-            margin="normal"
-            value={formData.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-            onBlur={() => handleBlur("email")}
-            error={touched.email && !!errors.email}
-            helperText={touched.email && errors.email}
-          />
-
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            margin="normal"
-            value={formData.password}
-            onChange={(e) => handleChange("password", e.target.value)}
-            onBlur={() => handleBlur("password")}
-            error={touched.password && !!errors.password}
-            helperText={touched.password && errors.password}
-          />
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ mt: 3 }}
-            disabled={!isValid}
-          >
-            Signup
-          </Button>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Typography align="center" variant="body1">
-              Already have an account?
-              <Link
-                component={RouterLink}
-                to="/admin/login"
-                color="primary"
-                underline="hover"
-              >
-                Login here
-              </Link>
-            </Typography>
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

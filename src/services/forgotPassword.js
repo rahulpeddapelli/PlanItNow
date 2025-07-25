@@ -1,17 +1,18 @@
-const serverUrl = import.meta.env.BACKEND_SERVER_URL;
+const serverUrl = import.meta.env.VITE_BACKEND_SERVER_URL;
 
-const forgotPassword = async (email) => {
+const forgotPassword = async (formData) => {
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify(formData),
   };
 
   try {
-    const response = await fetch(`${serverUrl}/auth/passwordReset/request`, options);
+    const response = await fetch(`${serverUrl}/auth/passwordReset/requestOtp`, options);
     const jsonRes = await response.json();
+    return jsonRes;
     // return { ok: response.ok, data: jsonRes };
   } catch (error) {
     console.error("Forgot Password Error:", error);

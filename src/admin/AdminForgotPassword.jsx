@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { validateEmail } from "../utils/validation";
 import { Link as RouterLink } from "react-router-dom";
-import forgotPassword from "../services/forgotPassword"
+import forgotPassword from "../services/forgotPassword";
+import { useNavigate } from "react-router-dom";
 
 const AdminForgotPassword = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [formData, setFormData] = useState({ email: "", role: "admin" });
 
   useEffect(() => {
     setIsValid(email.trim() !== "" && validateEmail(email));
@@ -28,31 +29,33 @@ const AdminForgotPassword = () => {
   //     // Add forgot password logic here
   //   }
   // };
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isEmailValid) {
+    if (!isValid) {
       setError("Please enter a valid email");
       return;
     }
 
-    setLoading(true);
+    // setLoading(true);
     try {
-      const { success, msg } = await forgotPassword(email);
+      const { success, msg } = await forgotPassword({ role: "admin", email });
 
       if (success) {
-        console.log("changed ")
-        showSuccess(data.msg);
+        console.log("otp send successfully ");
+        // showSuccess(msg);
         setEmail("");
+        alert("OTP sent successfully! Redirecting to reset password...");
         setTimeout(() => {
-          navigate("/forgot-password/reset-password");
-        }, 3000);
+          console.log("reset ");
+          navigate("/admin/reset-password");
+        }, 2000);
       } else {
-        showError(data.msg);
+        console.log("not send otp");
+        // showError(data.msg);
       }
     } catch (err) {
-      showError("Server error occurred while requesting OTP. Please try again.");
-    } finally {
-      setLoading(false);
+      console.log("error show");
+      // showError("Server error occurred while requesting OTP. Please try again.");
     }
   };
   return (
@@ -61,8 +64,8 @@ const handleSubmit = async (e) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      bgcolor="#f5f5f5"
-      px={2}
+      px={1}
+      sx={{ bgcolor: "#F6F4FFFF" }}
     >
       <Paper
         elevation={3}
@@ -75,8 +78,16 @@ const handleSubmit = async (e) => {
         component="form"
         onSubmit={handleSubmit}
       >
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          sx={{ color: "blue" }}
+        >
           Forgot Password
+        </Typography>
+        <Typography align="center" variant="body1" sx={{ color: "gray" }}>
+          Enter your email to get OTP.
         </Typography>
 
         <TextField
@@ -88,6 +99,7 @@ const handleSubmit = async (e) => {
           onBlur={() => setTouched(true)}
           error={touched && !isValid}
           helperText={getHelperText()}
+          sx={{ height: "56px" }}
         />
 
         <Button
@@ -95,7 +107,7 @@ const handleSubmit = async (e) => {
           variant="contained"
           fullWidth
           disabled={!isValid}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, cursor: "pointer" }}
         >
           Send OTP
         </Button>
@@ -105,7 +117,8 @@ const handleSubmit = async (e) => {
             <Link
               component={RouterLink}
               to="/admin/signup"
-              color="primary"
+              // color="primary"
+              color="secondary"
               underline="hover"
             >
               Signup now

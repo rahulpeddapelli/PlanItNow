@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
+import { Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { validateEmail, validatePassword } from "../utils/validation";
 import loginUser from "../services/login";
 import { Link as RouterLink } from "react-router-dom";
-
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({
@@ -62,6 +61,7 @@ const UserLogin = () => {
     console.log("Submitted");
 
     try {
+      console.log(formData);
       const { success, msg, data } = await loginUser(formData);
       if (success) {
         setFormData({ email: "", password: "" });
@@ -81,7 +81,7 @@ const UserLogin = () => {
         console.log(" login fail ");
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error.msg);
       // showError("Something went wrong while logging in. Please try again.");
     }
   };
@@ -93,12 +93,17 @@ const UserLogin = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        bgcolor: "#f5f5f5",
+        bgcolor: "#F6F4FFFF",
         p: 2,
       }}
     >
       <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 400 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          sx={{ color: "blue" }}
+        >
           User Login
         </Typography>
 
@@ -112,6 +117,7 @@ const UserLogin = () => {
             onBlur={() => handleBlur("email")}
             error={!!errors.email}
             helperText={errors.email}
+            sx={{ height: "56px" }}
           />
 
           <TextField
@@ -124,6 +130,7 @@ const UserLogin = () => {
             onBlur={() => handleBlur("password")}
             error={!!errors.password}
             helperText={errors.password}
+            sx={{ height: "56px" }}
           />
 
           <Button
@@ -136,22 +143,27 @@ const UserLogin = () => {
             Login
           </Button>
           <Box display="flex" justifyContent="center" mt={2}>
-                      <Typography align="center" variant="body1">
-                      Don't have an account?
-                      <Link
-                      component={RouterLink}
-                      to="/user/signup"
-                      color="primary"
-                      underline="hover"
-                      >Signup here</Link>|
-                      <Link
-                       component={RouterLink}
-                      to="/user/forgot-password"
-                      color="primary"
-                      underline="hover"
-                      >Forgot Password </Link>
-                    </Typography>
-                    </Box>
+            <Typography align="center" variant="body1">
+              Don't have an account?
+              <Link
+                component={RouterLink}
+                to="/user/signup"
+                color="secondary"
+                underline="hover"
+              >
+                Signup here
+              </Link>
+              |
+              <Link
+                component={RouterLink}
+                to="/user/forgot-password"
+                color="secondary"
+                underline="hover"
+              >
+                Forgot Password{" "}
+              </Link>
+            </Typography>
+          </Box>
         </form>
       </Paper>
     </Box>

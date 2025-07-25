@@ -1,4 +1,4 @@
-const serverUrl = import.meta.env.BACKEND_SERVER_URL;
+const serverUrl = import.meta.env.VITE_BACKEND_SERVER_URL;
 
 const resetPassword = async (formData) => {
   const options = {
@@ -10,14 +10,18 @@ const resetPassword = async (formData) => {
   };
 
   try {
-    const response = await fetch(`${serverUrl}/auth/passwordReset/reset-password`, options);
+    const response = await fetch(
+      `${serverUrl}/auth/passwordReset/reset-password`,
+      options
+    );
     const jsonRes = await response.json();
+    return jsonRes;
     // return { ok: response.ok, data: jsonRes };
   } catch (error) {
     console.error("Reset Password Error:", error);
     return {
-      ok: false,
-      data: { msg: "Something went wrong. Please try again." },
+      success: false,
+      msg: "Something went wrong. Please try again.",
     };
   }
 };
