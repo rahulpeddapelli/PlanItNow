@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   validatePassword,
   passwordValidationMessage,
@@ -8,8 +8,13 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { validateEmail } from "../utils/validation";
+import { ToastContext } from "../context/ToastProvider";
+import { useNavigate } from 'react-router-dom';
 
 const AdminResetPassword = () => {
+  const navigate = useNavigate();
+  const { showError, showSuccess } = useContext(ToastContext);
+
   const [form, setForm] = useState({
     email: "",
     otp: "",
@@ -96,17 +101,19 @@ const AdminResetPassword = () => {
         console.log("Reset password successfuly!");
         setForm({ email: "", password: "", otp: "" });
         setErrors({});
-        showSuccess(data.msg);
+        showSuccess(msg);
         setTimeout(() => {
           navigate("/admin/login");
         }, 3000);
       } else {
         console.log("not reset");
-        showError(data.msg);
+        showError(msg);
       }
     } catch (err) {
       console.log("error");
-      // showError("Unable to reset password due to server error. Please try again.");
+      showError(
+        "Unable to reset password due to server error. Please try again."
+      );
     }
   };
 

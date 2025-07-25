@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import registerUser from "../services/signup";
 import { Link as RouterLink } from "react-router-dom";
+import { ToastContext } from "../context/ToastProvider";
+
 
 import {
   validatePassword,
@@ -29,6 +31,7 @@ const AdminSignup = () => {
     email: "",
     password: "",
   });
+  const {showError, showSuccess}= useContext(ToastContext)
 
   useEffect(() => {
     setErrors({
@@ -83,15 +86,15 @@ const AdminSignup = () => {
         setErrors({});
         setTouched({});
         console.log("Signup successfully");
-        // showSuccess(success.msg);
+        showSuccess(res.msg);
       } else {
         console.log(res.msg);
         console.log("Signup fail");
-        // showError(success.msg);
+        showError(res.msg);
       }
     } catch (error) {
       console.log(error.msg);
-      // showError("Server error occurred while registering, Please try again.");
+      showError("Server error occurred while registering, Please try again.");
     }
   };
 

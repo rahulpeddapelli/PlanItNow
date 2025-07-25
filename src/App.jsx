@@ -12,24 +12,49 @@ import UserLogin from "./user/UserLogin";
 import UserSignup from "./user/UserSignup";
 import UserForgotPassword from "./user/UserForgotPassword";
 import UserResetPassword from "./user/UserResetPassword";
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+
+import ToastProvider from "./context/ToastProvider";
+
+import AccountProvider from "./context/AccountProvider";
+
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/signup" element={<AdminSignup />} />
-        <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
-        <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+    <AccountProvider>
+      <PrimeReactProvider>
+        <ToastProvider>
+          <Router>
+            <Routes>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/signup" element={<AdminSignup />} />
+              <Route
+                path="/admin/forgot-password"
+                element={<AdminForgotPassword />}
+              />
+              <Route
+                path="/admin/reset-password"
+                element={<AdminResetPassword />}
+              />
 
-        {/* User Routes */}
-        <Route path="/user/login" element={<UserLogin />} />
-        <Route path="/user/signup" element={<UserSignup />} />
-        <Route path="/user/forgot-password" element={<UserForgotPassword />} />
-        <Route path="/user/reset-password" element={<UserResetPassword />} />
-      </Routes>
-    </Router>
+              {/* User Routes */}
+              <Route path="/user/login" element={<UserLogin />} />
+              <Route path="/user/signup" element={<UserSignup />} />
+              <Route
+                path="/user/forgot-password"
+                element={<UserForgotPassword />}
+              />
+              <Route
+                path="/user/reset-password"
+                element={<UserResetPassword />}
+              />
+            </Routes>
+          </Router>
+        </ToastProvider>
+      </PrimeReactProvider>
+    </AccountProvider>
   );
 };
 

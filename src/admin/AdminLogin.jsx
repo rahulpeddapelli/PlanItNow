@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import loginUser from "../services/login";
 import { Link as RouterLink } from "react-router-dom";
+import { ToastContext } from "../context/ToastProvider";
+
 import {
   Link,
   TextField,
@@ -13,6 +15,7 @@ import {
 import { validateEmail, validatePassword } from "../utils/validation";
 
 const AdminLogin = () => {
+  const {showError}= useContext(ToastContext)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -94,7 +97,7 @@ const AdminLogin = () => {
       }
     } catch (error) {
       console.log(error.msg);
-      // showError("Something went wrong while logging in. Please try again.");
+      showError("Something went wrong while logging in. Please try again.");
     }
   };
   return (

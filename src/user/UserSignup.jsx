@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   Link,
   TextField,
@@ -15,8 +15,11 @@ import {
 } from "../utils/validation";
 import registerUser from "../services/signup";
 import { Link as RouterLink } from "react-router-dom";
+import { ToastContext } from "../context/ToastProvider";
 
 const UserSignup = () => {
+  const { showError, showSuccess } = useContext(ToastContext);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -81,11 +84,14 @@ const UserSignup = () => {
         setFormData({ name: "", email: "", password: "", role: "user" });
         setTouched({ name: false, email: false, password: false });
         setErrors({ name: "", email: "", password: "" });
+        showSuccess(res.msg);
       } else {
         console.log("Signup Failed:", res.msg);
+        showError(res.msg);
       }
     } catch (error) {
       console.log("Server Error:", error.msg || error);
+      showError("Server error occurred while registering, Please try again.");
     }
   };
 

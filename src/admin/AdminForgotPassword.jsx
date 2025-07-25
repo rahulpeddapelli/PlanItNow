@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { validateEmail } from "../utils/validation";
 import { Link as RouterLink } from "react-router-dom";
 import forgotPassword from "../services/forgotPassword";
 import { useNavigate } from "react-router-dom";
+import { ToastContext } from "../context/ToastProvider";
 
 const AdminForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const { showError, showSuccess } = useContext(ToastContext);
 
   useEffect(() => {
     setIsValid(email.trim() !== "" && validateEmail(email));
@@ -42,20 +44,22 @@ const AdminForgotPassword = () => {
 
       if (success) {
         console.log("otp send successfully ");
-        // showSuccess(msg);
+        showSuccess(msg);
         setEmail("");
-        alert("OTP sent successfully! Redirecting to reset password...");
+        // alert("OTP sent successfully! Redirecting to reset password...");
         setTimeout(() => {
           console.log("reset ");
           navigate("/admin/reset-password");
         }, 2000);
       } else {
         console.log("not send otp");
-        // showError(data.msg);
+        showError(msg);
       }
     } catch (err) {
       console.log("error show");
-      // showError("Server error occurred while requesting OTP. Please try again.");
+      showError(
+        "Server error occurred while requesting OTP. Please try again."
+      );
     }
   };
   return (
